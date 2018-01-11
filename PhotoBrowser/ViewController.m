@@ -38,7 +38,7 @@
 
 -(void)localBtnAction{
     // 显示本地图片
-    [PhotoBrowser showLocalImages:@[@"0.jpg",@"1.jpg",@"2.jpg",@"3.jpg",@"4.jpg"]];
+    [PhotoBrowser showLocalImages:@[@"0.jpg",@"1.jpg",@"2.jpg",@"3.jpg",@"4.jpg"] selectedIndex:3];
 }
 
 
@@ -48,7 +48,7 @@
                                   @"https://ss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/super/whfpf%3D425%2C260%2C50/sign=a41eb338dd33c895a62bcb3bb72e47c2/5fdf8db1cb134954a2192ccb524e9258d1094a1e.jpg",
                                   @"http://c.hiphotos.baidu.com/image/w%3D400/sign=c2318ff84334970a4773112fa5c8d1c0/b7fd5266d0160924c1fae5ccd60735fae7cd340d.jpg"
                                   ]
-               placeholderImage:[UIImage imageNamed:@"zhanweitu"]];
+               placeholderImage:[UIImage imageNamed:@"zhanweitu"] selectedIndex:2];
 }
 
 

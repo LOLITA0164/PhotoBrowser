@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger , ImagesType) {
 @end
 @implementation PhotoBrowser
 
-+(void)showImages:(NSArray*)images imageTyep:(ImagesType)type placeholderImage:(UIImage *)image{
++(void)showImages:(NSArray*)images imageTyep:(ImagesType)type placeholderImage:(UIImage *)image selectedIndex:(NSInteger)index{
     PhotoBrowser *photoBrowser = [[PhotoBrowser alloc] initWithFrame:[UIScreen mainScreen].bounds];
     photoBrowser.images = images;
     photoBrowser.type = type;
@@ -47,7 +47,7 @@ typedef NS_ENUM(NSInteger , ImagesType) {
     }
     
     // 添加到keyWindow上
-    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+    UIWindow *keyWindow = [[UIApplication sharedApplication].delegate window];
     [keyWindow addSubview:photoBrowser];
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
     animation.duration = 0.25f;  // 动画之行时间
@@ -57,15 +57,19 @@ typedef NS_ENUM(NSInteger , ImagesType) {
     animation.fillMode = kCAFillModeForwards;
     // 将动画添加到layer上
     [photoBrowser.layer addAnimation:animation forKey:@"animation"];
+    
+    // 设置位置
+    [photoBrowser.collectionView setContentOffset:CGPointMake([UIScreen mainScreen].bounds.size.width*index, 0) animated:NO];
+    photoBrowser.pageControl.currentPage = index;
 }
 
 
-+(void)showLocalImages:(NSArray *)images{
-    [self showImages:images imageTyep:Image_Local placeholderImage:nil];
++(void)showLocalImages:(NSArray *)images selectedIndex:(NSInteger)index{
+    [self showImages:images imageTyep:Image_Local placeholderImage:nil selectedIndex:index];
 }
 
-+(void)showURLImages:(NSArray *)images placeholderImage:(UIImage *)image{
-    [self showImages:images imageTyep:Image_URL placeholderImage:image];
++(void)showURLImages:(NSArray *)images placeholderImage:(UIImage *)image selectedIndex:(NSInteger)index{
+    [self showImages:images imageTyep:Image_URL placeholderImage:image selectedIndex:index];
 }
 
 #pragma mark - <************************** 初始化控件 **************************>

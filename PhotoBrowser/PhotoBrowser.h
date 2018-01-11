@@ -13,12 +13,12 @@
 /**
  加载本地图片
  */
-+(void)showLocalImages:(NSArray*)images;
++(void)showLocalImages:(NSArray*)images selectedIndex:(NSInteger)index;
 
 /**
  加载网络图片
  */
-+(void)showURLImages:(NSArray*)images placeholderImage:(UIImage *)image;
++(void)showURLImages:(NSArray*)images placeholderImage:(UIImage *)image selectedIndex:(NSInteger)index;
 
 @end
 
