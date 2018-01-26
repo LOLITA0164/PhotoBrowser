@@ -38,7 +38,7 @@ typedef NS_ENUM(NSInteger , ImagesType) {
     [photoBrowser addSubview:photoBrowser.bgView];
     [photoBrowser addSubview:photoBrowser.collectionView];
     if (images.count>1) {
-        [photoBrowser addSubview:photoBrowser.pageControl];
+        [photoBrowser.bgView addSubview:photoBrowser.pageControl];
     }
     [photoBrowser addSubview:photoBrowser.backBtn];
     if (type==Image_URL) {
@@ -90,8 +90,15 @@ typedef NS_ENUM(NSInteger , ImagesType) {
         UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
         pan.delegate = self;
         [_collectionView addGestureRecognizer:pan];
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-        [_collectionView addGestureRecognizer:tap];
+        UITapGestureRecognizer *singleTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(handleSingleTap:)];
+        [_collectionView addGestureRecognizer:singleTapGesture];
+        
+        UITapGestureRecognizer *doubleTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(handleDoubleTap:)];
+        doubleTapGesture.numberOfTapsRequired = 2;
+        doubleTapGesture.numberOfTouchesRequired = 1;
+        [_collectionView addGestureRecognizer:doubleTapGesture];
+        //只有当doubleTapGesture识别失败的时候(即识别出这不是双击操作)，singleTapGesture才能开始识别
+        [singleTapGesture requireGestureRecognizerToFail:doubleTapGesture];
     }
     return _collectionView;
 }
@@ -290,7 +297,8 @@ typedef NS_ENUM(NSInteger , ImagesType) {
     }
 }
 
--(void)handleTap:(UITapGestureRecognizer *)tap{
+
+-(void)handleSingleTap:(UIGestureRecognizer *)tap{
     [UIView animateWithDuration:0.5 animations:^{
         CGRect newFrame = self.collectionView.frame;
         newFrame.origin.y = self.collectionView.frame.origin.y + self.frame.size.height;
@@ -301,6 +309,17 @@ typedef NS_ENUM(NSInteger , ImagesType) {
         [self removeFromSuperview];
     }];
 }
+
+-(void)handleDoubleTap:(UIGestureRecognizer *)tap{
+    NSArray *cellArray =  self.collectionView.visibleCells;
+    PhotoBrowserCollectionViewCell *cell = cellArray.firstObject;
+    if (cell.scrollView.zoomScale!=1) {
+        [cell.scrollView setZoomScale:1 animated:YES];
+    }else{
+       [cell.scrollView setZoomScale:2 animated:YES];
+    }
+}
+
 
 
 @end
