@@ -38,7 +38,7 @@ typedef NS_ENUM(NSInteger , ImagesType) {
     [photoBrowser addSubview:photoBrowser.bgView];
     [photoBrowser addSubview:photoBrowser.collectionView];
     if (images.count>1) {
-        [photoBrowser.bgView addSubview:photoBrowser.pageControl];
+        [photoBrowser addSubview:photoBrowser.pageControl];
     }
     [photoBrowser addSubview:photoBrowser.backBtn];
     if (type==Image_URL) {
