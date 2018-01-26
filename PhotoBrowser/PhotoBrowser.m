@@ -38,7 +38,7 @@ typedef NS_ENUM(NSInteger , ImagesType) {
     [photoBrowser addSubview:photoBrowser.bgView];
     [photoBrowser addSubview:photoBrowser.collectionView];
     if (images.count>1) {
-        [photoBrowser.bgView addSubview:photoBrowser.pageControl];
+        [photoBrowser addSubview:photoBrowser.pageControl];
     }
     [photoBrowser addSubview:photoBrowser.backBtn];
     if (type==Image_URL) {
@@ -90,6 +90,8 @@ typedef NS_ENUM(NSInteger , ImagesType) {
         UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
         pan.delegate = self;
         [_collectionView addGestureRecognizer:pan];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+        [_collectionView addGestureRecognizer:tap];
     }
     return _collectionView;
 }
@@ -177,6 +179,8 @@ typedef NS_ENUM(NSInteger , ImagesType) {
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     return CGSizeMake([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
 }
+
+
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scroll{
     NSInteger pageIndex = scroll.contentOffset.x/self.frame.size.width;
     self.pageControl.currentPage = pageIndex;
@@ -284,7 +288,18 @@ typedef NS_ENUM(NSInteger , ImagesType) {
             }];
         }
     }
-    
+}
+
+-(void)handleTap:(UITapGestureRecognizer *)tap{
+    [UIView animateWithDuration:0.5 animations:^{
+        CGRect newFrame = self.collectionView.frame;
+        newFrame.origin.y = self.collectionView.frame.origin.y + self.frame.size.height;
+        self.collectionView.frame = newFrame;
+        self.bgView.alpha = 0;
+        self.collectionView.alpha = 0;
+    } completion:^(BOOL finished) {
+        [self removeFromSuperview];
+    }];
 }
 
 
@@ -311,6 +326,7 @@ typedef NS_ENUM(NSInteger , ImagesType) {
         _imageView = [[UIImageView alloc] initWithFrame:self.bounds];
         _imageView.contentMode = UIViewContentModeScaleAspectFit;
         _imageView.backgroundColor = [UIColor clearColor];
+        _imageView.userInteractionEnabled = YES;
     }
     return _imageView;
 }
@@ -334,6 +350,7 @@ typedef NS_ENUM(NSInteger , ImagesType) {
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView{
     return self.imageView;
 }
+
 
 //控制缩放时在中心
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView{
