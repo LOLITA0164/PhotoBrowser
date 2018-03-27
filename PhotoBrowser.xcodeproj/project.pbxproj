@@ -7,33 +7,67 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C7E84B73206A2F55001E73F0 /* PhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = C7E84B6A206A2F55001E73F0 /* PhotoBrowser.m */; };
+		C7E84B74206A2F55001E73F0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7E84B6D206A2F55001E73F0 /* ViewController.m */; };
+		C7E84B75206A2F55001E73F0 /* TESTDATA.m in Sources */ = {isa = PBXBuildFile; fileRef = C7E84B71206A2F55001E73F0 /* TESTDATA.m */; };
+		C7E84B76206A2F55001E73F0 /* testData.plist in Resources */ = {isa = PBXBuildFile; fileRef = C7E84B72206A2F55001E73F0 /* testData.plist */; };
+		C7E84B7D206A31AB001E73F0 /* ListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7E84B7B206A31AB001E73F0 /* ListViewController.m */; };
+		C7E84B7E206A31AB001E73F0 /* ListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7E84B7C206A31AB001E73F0 /* ListViewController.xib */; };
+		C7E84B81206A4136001E73F0 /* ListViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C7E84B80206A4136001E73F0 /* ListViewManager.m */; };
+		C7E84B84206A4ACF001E73F0 /* ListViewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C7E84B83206A4ACF001E73F0 /* ListViewTableViewCell.m */; };
+		C7E84B88206A4D73001E73F0 /* NormalViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7E84B87206A4D73001E73F0 /* NormalViewViewController.m */; };
+		C7E84B8C206A59DB001E73F0 /* CutomCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C7E84B8B206A59DB001E73F0 /* CutomCollectionViewLayout.m */; };
+		C7E84B8F206A59F1001E73F0 /* FlowViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C7E84B8E206A59F1001E73F0 /* FlowViewManager.m */; };
+		C7E84B93206A5A63001E73F0 /* FlowViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7E84B91206A5A63001E73F0 /* FlowViewViewController.m */; };
+		C7E84B94206A5A63001E73F0 /* FlowViewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7E84B92206A5A63001E73F0 /* FlowViewViewController.xib */; };
+		C7E84B97206A5ADC001E73F0 /* CustomCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C7E84B96206A5ADC001E73F0 /* CustomCollectionViewCell.m */; };
 		D3D47A2F1F5E64E4005EC63C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D3D47A2E1F5E64E4005EC63C /* main.m */; };
 		D3D47A321F5E64E4005EC63C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D3D47A311F5E64E4005EC63C /* AppDelegate.m */; };
-		D3D47A351F5E64E4005EC63C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D3D47A341F5E64E4005EC63C /* ViewController.m */; };
 		D3D47A381F5E64E4005EC63C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3D47A361F5E64E4005EC63C /* Main.storyboard */; };
 		D3D47A3A1F5E64E4005EC63C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3D47A391F5E64E4005EC63C /* Assets.xcassets */; };
 		D3D47A3D1F5E64E4005EC63C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3D47A3B1F5E64E4005EC63C /* LaunchScreen.storyboard */; };
 		D3D47A451F5E659E005EC63C /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = D3D47A441F5E659E005EC63C /* Podfile */; };
-		D3D47A481F5E6658005EC63C /* PhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = D3D47A471F5E6658005EC63C /* PhotoBrowser.m */; };
 		E4E7A66BD11385EAAF2BE621 /* libPods-PhotoBrowser.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D3F6D83E175E94F868CD58 /* libPods-PhotoBrowser.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		00D3F6D83E175E94F868CD58 /* libPods-PhotoBrowser.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PhotoBrowser.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A073C1EAB9A969640D32EB06 /* Pods-PhotoBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoBrowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-PhotoBrowser/Pods-PhotoBrowser.release.xcconfig"; sourceTree = "<group>"; };
+		C7E84B6A206A2F55001E73F0 /* PhotoBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoBrowser.m; sourceTree = "<group>"; };
+		C7E84B6B206A2F55001E73F0 /* PhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoBrowser.h; sourceTree = "<group>"; };
+		C7E84B6D206A2F55001E73F0 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		C7E84B6E206A2F55001E73F0 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		C7E84B70206A2F55001E73F0 /* TESTDATA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TESTDATA.h; sourceTree = "<group>"; };
+		C7E84B71206A2F55001E73F0 /* TESTDATA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TESTDATA.m; sourceTree = "<group>"; };
+		C7E84B72206A2F55001E73F0 /* testData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = testData.plist; sourceTree = "<group>"; };
+		C7E84B7A206A31AB001E73F0 /* ListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListViewController.h; sourceTree = "<group>"; };
+		C7E84B7B206A31AB001E73F0 /* ListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListViewController.m; sourceTree = "<group>"; };
+		C7E84B7C206A31AB001E73F0 /* ListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListViewController.xib; sourceTree = "<group>"; };
+		C7E84B7F206A4136001E73F0 /* ListViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListViewManager.h; sourceTree = "<group>"; };
+		C7E84B80206A4136001E73F0 /* ListViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListViewManager.m; sourceTree = "<group>"; };
+		C7E84B82206A4ACF001E73F0 /* ListViewTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListViewTableViewCell.h; sourceTree = "<group>"; };
+		C7E84B83206A4ACF001E73F0 /* ListViewTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListViewTableViewCell.m; sourceTree = "<group>"; };
+		C7E84B86206A4D73001E73F0 /* NormalViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NormalViewViewController.h; sourceTree = "<group>"; };
+		C7E84B87206A4D73001E73F0 /* NormalViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NormalViewViewController.m; sourceTree = "<group>"; };
+		C7E84B89206A4DDE001E73F0 /* AppMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppMacro.h; sourceTree = "<group>"; };
+		C7E84B8A206A59DB001E73F0 /* CutomCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CutomCollectionViewLayout.h; sourceTree = "<group>"; };
+		C7E84B8B206A59DB001E73F0 /* CutomCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CutomCollectionViewLayout.m; sourceTree = "<group>"; };
+		C7E84B8D206A59F1001E73F0 /* FlowViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlowViewManager.h; sourceTree = "<group>"; };
+		C7E84B8E206A59F1001E73F0 /* FlowViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlowViewManager.m; sourceTree = "<group>"; };
+		C7E84B90206A5A63001E73F0 /* FlowViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlowViewViewController.h; sourceTree = "<group>"; };
+		C7E84B91206A5A63001E73F0 /* FlowViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlowViewViewController.m; sourceTree = "<group>"; };
+		C7E84B92206A5A63001E73F0 /* FlowViewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FlowViewViewController.xib; sourceTree = "<group>"; };
+		C7E84B95206A5ADC001E73F0 /* CustomCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCollectionViewCell.h; sourceTree = "<group>"; };
+		C7E84B96206A5ADC001E73F0 /* CustomCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCollectionViewCell.m; sourceTree = "<group>"; };
 		D3D47A2A1F5E64E4005EC63C /* PhotoBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3D47A2E1F5E64E4005EC63C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D3D47A301F5E64E4005EC63C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D3D47A311F5E64E4005EC63C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		D3D47A331F5E64E4005EC63C /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		D3D47A341F5E64E4005EC63C /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		D3D47A371F5E64E4005EC63C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D3D47A391F5E64E4005EC63C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D3D47A3C1F5E64E4005EC63C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D3D47A3E1F5E64E4005EC63C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D3D47A441F5E659E005EC63C /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
-		D3D47A461F5E6658005EC63C /* PhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoBrowser.h; sourceTree = "<group>"; };
-		D3D47A471F5E6658005EC63C /* PhotoBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoBrowser.m; sourceTree = "<group>"; };
 		E4769A3CAE6FC90F6466CCAB /* Pods-PhotoBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoBrowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PhotoBrowser/Pods-PhotoBrowser.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -55,6 +89,77 @@
 				00D3F6D83E175E94F868CD58 /* libPods-PhotoBrowser.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C7E84B69206A2F55001E73F0 /* PhotoBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				C7E84B6B206A2F55001E73F0 /* PhotoBrowser.h */,
+				C7E84B6A206A2F55001E73F0 /* PhotoBrowser.m */,
+			);
+			path = PhotoBrowser;
+			sourceTree = "<group>";
+		};
+		C7E84B6C206A2F55001E73F0 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				C7E84B6E206A2F55001E73F0 /* ViewController.h */,
+				C7E84B6D206A2F55001E73F0 /* ViewController.m */,
+				C7E84B85206A4D5F001E73F0 /* NormalView */,
+				C7E84B78206A317B001E73F0 /* ListView */,
+				C7E84B77206A317B001E73F0 /* FlowView */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		C7E84B6F206A2F55001E73F0 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C7E84B89206A4DDE001E73F0 /* AppMacro.h */,
+				C7E84B70206A2F55001E73F0 /* TESTDATA.h */,
+				C7E84B71206A2F55001E73F0 /* TESTDATA.m */,
+				C7E84B72206A2F55001E73F0 /* testData.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		C7E84B77206A317B001E73F0 /* FlowView */ = {
+			isa = PBXGroup;
+			children = (
+				C7E84B90206A5A63001E73F0 /* FlowViewViewController.h */,
+				C7E84B91206A5A63001E73F0 /* FlowViewViewController.m */,
+				C7E84B92206A5A63001E73F0 /* FlowViewViewController.xib */,
+				C7E84B95206A5ADC001E73F0 /* CustomCollectionViewCell.h */,
+				C7E84B96206A5ADC001E73F0 /* CustomCollectionViewCell.m */,
+				C7E84B8A206A59DB001E73F0 /* CutomCollectionViewLayout.h */,
+				C7E84B8B206A59DB001E73F0 /* CutomCollectionViewLayout.m */,
+				C7E84B8D206A59F1001E73F0 /* FlowViewManager.h */,
+				C7E84B8E206A59F1001E73F0 /* FlowViewManager.m */,
+			);
+			path = FlowView;
+			sourceTree = "<group>";
+		};
+		C7E84B78206A317B001E73F0 /* ListView */ = {
+			isa = PBXGroup;
+			children = (
+				C7E84B7A206A31AB001E73F0 /* ListViewController.h */,
+				C7E84B7B206A31AB001E73F0 /* ListViewController.m */,
+				C7E84B7C206A31AB001E73F0 /* ListViewController.xib */,
+				C7E84B82206A4ACF001E73F0 /* ListViewTableViewCell.h */,
+				C7E84B83206A4ACF001E73F0 /* ListViewTableViewCell.m */,
+				C7E84B7F206A4136001E73F0 /* ListViewManager.h */,
+				C7E84B80206A4136001E73F0 /* ListViewManager.m */,
+			);
+			path = ListView;
+			sourceTree = "<group>";
+		};
+		C7E84B85206A4D5F001E73F0 /* NormalView */ = {
+			isa = PBXGroup;
+			children = (
+				C7E84B86206A4D73001E73F0 /* NormalViewViewController.h */,
+				C7E84B87206A4D73001E73F0 /* NormalViewViewController.m */,
+			);
+			path = NormalView;
 			sourceTree = "<group>";
 		};
 		D3D47A211F5E64E4005EC63C = {
@@ -79,10 +184,11 @@
 		D3D47A2C1F5E64E4005EC63C /* PhotoBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				C7E84B69206A2F55001E73F0 /* PhotoBrowser */,
+				C7E84B6C206A2F55001E73F0 /* Controller */,
+				C7E84B6F206A2F55001E73F0 /* Resources */,
 				D3D47A301F5E64E4005EC63C /* AppDelegate.h */,
 				D3D47A311F5E64E4005EC63C /* AppDelegate.m */,
-				D3D47A331F5E64E4005EC63C /* ViewController.h */,
-				D3D47A341F5E64E4005EC63C /* ViewController.m */,
 				D3D47A361F5E64E4005EC63C /* Main.storyboard */,
 				D3D47A391F5E64E4005EC63C /* Assets.xcassets */,
 				D3D47A3B1F5E64E4005EC63C /* LaunchScreen.storyboard */,
@@ -95,8 +201,6 @@
 		D3D47A2D1F5E64E4005EC63C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D3D47A461F5E6658005EC63C /* PhotoBrowser.h */,
-				D3D47A471F5E6658005EC63C /* PhotoBrowser.m */,
 				D3D47A2E1F5E64E4005EC63C /* main.m */,
 			);
 			name = "Supporting Files";
@@ -175,7 +279,10 @@
 			files = (
 				D3D47A3D1F5E64E4005EC63C /* LaunchScreen.storyboard in Resources */,
 				D3D47A3A1F5E64E4005EC63C /* Assets.xcassets in Resources */,
+				C7E84B7E206A31AB001E73F0 /* ListViewController.xib in Resources */,
+				C7E84B94206A5A63001E73F0 /* FlowViewViewController.xib in Resources */,
 				D3D47A451F5E659E005EC63C /* Podfile in Resources */,
+				C7E84B76206A2F55001E73F0 /* testData.plist in Resources */,
 				D3D47A381F5E64E4005EC63C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -235,10 +342,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3D47A351F5E64E4005EC63C /* ViewController.m in Sources */,
+				C7E84B81206A4136001E73F0 /* ListViewManager.m in Sources */,
+				C7E84B93206A5A63001E73F0 /* FlowViewViewController.m in Sources */,
+				C7E84B73206A2F55001E73F0 /* PhotoBrowser.m in Sources */,
+				C7E84B97206A5ADC001E73F0 /* CustomCollectionViewCell.m in Sources */,
+				C7E84B8F206A59F1001E73F0 /* FlowViewManager.m in Sources */,
+				C7E84B88206A4D73001E73F0 /* NormalViewViewController.m in Sources */,
 				D3D47A321F5E64E4005EC63C /* AppDelegate.m in Sources */,
+				C7E84B7D206A31AB001E73F0 /* ListViewController.m in Sources */,
+				C7E84B84206A4ACF001E73F0 /* ListViewTableViewCell.m in Sources */,
+				C7E84B75206A2F55001E73F0 /* TESTDATA.m in Sources */,
+				C7E84B74206A2F55001E73F0 /* ViewController.m in Sources */,
 				D3D47A2F1F5E64E4005EC63C /* main.m in Sources */,
-				D3D47A481F5E6658005EC63C /* PhotoBrowser.m in Sources */,
+				C7E84B8C206A59DB001E73F0 /* CutomCollectionViewLayout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

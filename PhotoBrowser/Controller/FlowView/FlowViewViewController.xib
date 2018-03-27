@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="17B1003" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FlowViewViewController">
+            <connections>
+                <outlet property="collectionView" destination="iBf-Hd-uA0" id="47b-YR-smu"/>
+                <outlet property="layout" destination="gpi-h1-Yke" id="HLD-LP-dTq"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="iBf-Hd-uA0">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <collectionViewLayout key="collectionViewLayout" id="gpi-h1-Yke" customClass="CutomCollectionViewLayout"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="eyP-1U-GwC"/>
+                        <outlet property="delegate" destination="-1" id="mU8-94-XFo"/>
+                    </connections>
+                </collectionView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="iBf-Hd-uA0" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Nff-dh-q3H"/>
+                <constraint firstItem="iBf-Hd-uA0" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="fUs-dY-Qb3"/>
+                <constraint firstAttribute="bottom" secondItem="iBf-Hd-uA0" secondAttribute="bottom" id="obs-ky-03L"/>
+                <constraint firstAttribute="trailing" secondItem="iBf-Hd-uA0" secondAttribute="trailing" id="ur6-cQ-evE"/>
+            </constraints>
+        </view>
+    </objects>
+</document>

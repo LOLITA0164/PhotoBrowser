@@ -9,6 +9,9 @@
 #import "PhotoBrowser.h"
 #import <UIImageView+WebCache.h>
 
+const CGFloat duration = 0.25f;
+const CGFloat durationLong = 0.4f;
+
 typedef NS_ENUM(NSInteger , ImagesType) {
     Image_Local,
     Image_URL
@@ -20,18 +23,22 @@ typedef NS_ENUM(NSInteger , ImagesType) {
 @property (strong ,nonatomic) UIView *bgView;   // 用来控制渐变而不改变父视图self
 @property (strong ,nonatomic) UIPageControl *pageControl;
 @property (strong ,nonatomic) UILabel *pageLabel;
-@property (strong ,nonatomic) UIButton *backBtn;
 @property (strong ,nonatomic) UIButton *saveBtn;
 @property (strong ,nonatomic) UIActivityIndicatorView *activityIndicator;
 // !!!: 数据类
 @property (copy ,nonatomic) NSArray *images;
 @property (assign ,nonatomic) ImagesType type;
+@property (assign ,nonatomic) NSInteger currentPage;
 @property (strong ,nonatomic) UIImage *placeholderImage;
+@property (assign, nonatomic) CGRect fromFrame;//图片源位置，使用convertRect映射到window上的frame，关闭浏览器需要移回去的位置
+@property (assign, nonatomic) UIView *fromView;//源图片视图，其frame映射到window上的frame为fromFrame，关闭浏览器需要移回去视图
 @end
 @implementation PhotoBrowser
 
-+(void)showImages:(NSArray*)images imageTyep:(ImagesType)type placeholderImage:(UIImage *)image selectedIndex:(NSInteger)index{
++(instancetype)showImages:(NSArray*)images imageTyep:(ImagesType)type placeholderImage:(UIImage *)image selectedIndex:(NSInteger)index fromView:(UIView *)fromView{
     PhotoBrowser *photoBrowser = [[PhotoBrowser alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    photoBrowser.fromView = fromView;
+    photoBrowser.fromFrame = [fromView.superview convertRect:fromView.frame toView:[[UIApplication sharedApplication].delegate window]];
     photoBrowser.images = images;
     photoBrowser.type = type;
     photoBrowser.placeholderImage = image;
@@ -45,37 +52,62 @@ typedef NS_ENUM(NSInteger , ImagesType) {
             [photoBrowser addSubview:photoBrowser.pageLabel];
         }
     }
-    [photoBrowser addSubview:photoBrowser.backBtn];
     if (type==Image_URL) {
         [photoBrowser addSubview:photoBrowser.saveBtn];
         [photoBrowser addSubview:photoBrowser.activityIndicator];
     }
     
-    // 添加到keyWindow上
     UIWindow *keyWindow = [[UIApplication sharedApplication].delegate window];
     [keyWindow addSubview:photoBrowser];
-    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
-    animation.duration = 0.25f;  // 动画之行时间
-    animation.fromValue = @(0.0);
-    animation.toValue = @(1.0);
-    animation.removedOnCompletion = NO;
-    animation.fillMode = kCAFillModeForwards;
-    // 将动画添加到layer上
-    [photoBrowser.layer addAnimation:animation forKey:@"animation"];
+    
+    // 隐藏掉该视图
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        photoBrowser.fromView.hidden = YES;
+    });
     
     // 设置位置
     [photoBrowser.collectionView setContentOffset:CGPointMake([UIScreen mainScreen].bounds.size.width*index, 0) animated:NO];
     photoBrowser.pageControl.currentPage = index;
+    photoBrowser.currentPage = index;
     photoBrowser.pageLabel.text = [NSString stringWithFormat:@"%ld / %ld",index+1,images.count];
+    
+    
+    // 添加到keyWindow上
+    CGPoint position = photoBrowser.center;
+    if(photoBrowser.fromFrame.size.width){//设置图片初始positon
+        position = CGPointMake(photoBrowser.fromFrame.origin.x + photoBrowser.fromFrame.size.width / 2.0, photoBrowser.fromFrame.origin.y + photoBrowser.fromFrame.size.height / 2.0);
+    }
+    
+    CAAnimationGroup *group_animations = [CAAnimationGroup animation];
+    group_animations.duration = duration;  // 动画之行时间
+    group_animations.removedOnCompletion = NO;
+    group_animations.fillMode = kCAFillModeForwards;
+    
+    CABasicAnimation *positon_animation = [CABasicAnimation animationWithKeyPath:@"position"];
+    positon_animation.fromValue = [NSValue valueWithCGPoint:position];
+    positon_animation.toValue = [NSValue valueWithCGPoint:photoBrowser.center];
+    
+    CABasicAnimation *scale_x = [CABasicAnimation animationWithKeyPath:@"transform.scale.x"];
+    scale_x.fromValue = @(photoBrowser.fromFrame.size.width / photoBrowser.frame.size.width);
+    scale_x.toValue = @(1);
+    
+    CABasicAnimation *scale_y = [CABasicAnimation animationWithKeyPath:@"transform.scale.y"];
+    scale_y.fromValue = @(photoBrowser.fromFrame.size.height / photoBrowser.frame.size.height);
+    scale_y.toValue = @(1);
+    // 将动画添加到layer上
+    [group_animations setAnimations:@[positon_animation, scale_x, scale_y]];
+    [photoBrowser.layer addAnimation:group_animations forKey:@"animation"];
+    
+    return photoBrowser;
 }
 
 
-+(void)showLocalImages:(NSArray *)images selectedIndex:(NSInteger)index{
-    [self showImages:images imageTyep:Image_Local placeholderImage:nil selectedIndex:index];
++ (instancetype)showLocalImages:(NSArray *)images selectedIndex:(NSInteger)index selectedView:(UIView *)selectedView{
+    return [self showImages:images imageTyep:Image_Local placeholderImage:nil selectedIndex:index fromView:selectedView];
 }
 
-+(void)showURLImages:(NSArray *)images placeholderImage:(UIImage *)image selectedIndex:(NSInteger)index{
-    [self showImages:images imageTyep:Image_URL placeholderImage:image selectedIndex:index];
++(instancetype)showURLImages:(NSArray *)images placeholderImage:(UIImage *)image selectedIndex:(NSInteger)index selectedView:(UIView *)selectedView{
+    return [self showImages:images imageTyep:Image_URL placeholderImage:image selectedIndex:index fromView:selectedView];
 }
 
 #pragma mark - <************************** 初始化控件 **************************>
@@ -122,7 +154,7 @@ typedef NS_ENUM(NSInteger , ImagesType) {
         //注意此方法可以根据页数返回UIPageControl合适的大小
         CGSize size= [_pageControl sizeForNumberOfPages:self.images.count];
         _pageControl.bounds=CGRectMake(0, 0, size.width, size.height);
-        _pageControl.center=CGPointMake(self.frame.size.width/2.0, self.frame.size.height-_pageControl.bounds.size.height/2.0);
+        _pageControl.center=CGPointMake(self.bounds.size.width/2.0, self.bounds.size.height-_pageControl.bounds.size.height/2.0);
         //设置颜色
         _pageControl.pageIndicatorTintColor=[UIColor whiteColor];
         //设置当前页颜色
@@ -142,23 +174,13 @@ typedef NS_ENUM(NSInteger , ImagesType) {
     }
     return _pageLabel;
 }
-// !!!: 返回按钮
--(UIButton *)backBtn{
-    if (_backBtn==nil) {
-        _backBtn = [[UIButton alloc] initWithFrame:CGRectMake(10, 25, 40, 30)];
-        [_backBtn setTitle:@"返回" forState:UIControlStateNormal];
-        [_backBtn addTarget:self action:@selector(btnAction:) forControlEvents:UIControlEventTouchUpInside];
-        _backBtn.tag = 1;
-    }
-    return _backBtn;
-}
+
 // !!!: 保存按钮
 -(UIButton *)saveBtn{
     if (_saveBtn==nil) {
         _saveBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width-40-10, 25, 40, 30)];
         [_saveBtn setTitle:@"保存" forState:UIControlStateNormal];
         [_saveBtn addTarget:self action:@selector(btnAction:) forControlEvents:UIControlEventTouchUpInside];
-        _saveBtn.tag = 2;
     }
     return _saveBtn;
 }
@@ -207,7 +229,26 @@ typedef NS_ENUM(NSInteger , ImagesType) {
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scroll{
     NSInteger pageIndex = scroll.contentOffset.x/self.frame.size.width;
     self.pageControl.currentPage = pageIndex;
+    self.currentPage = pageIndex;
     self.pageLabel.text = [NSString stringWithFormat:@"%ld / %ld",pageIndex+1,self.images.count];
+    
+    if([self.delegate respondsToSelector:@selector(photoBrowser:didScrollToPage:)]){
+        UIView *selectedView = [self.delegate photoBrowser:self didScrollToPage:pageIndex];
+        CGRect frame = [selectedView.superview convertRect:selectedView.frame toView:[[UIApplication sharedApplication].delegate window]];
+        self.fromFrame = frame;
+        self.fromView.hidden = NO;
+        self.fromView = selectedView;
+        self.fromView.hidden = YES;
+    }
+    else if ([self.delegate respondsToSelector:@selector(photoBrowser:didScrollToPage:completion:)]) {
+        [self.delegate photoBrowser:self didScrollToPage:pageIndex completion:^(UIView *selectedView) {
+            CGRect frame = [selectedView.superview convertRect:selectedView.frame toView:[[UIApplication sharedApplication].delegate window]];
+            self.fromFrame = frame;
+            self.fromView.hidden = NO;
+            self.fromView = selectedView;
+            self.fromView.hidden = YES;
+        }];
+    }
 }
 
 // !!!: 手势代理
@@ -219,24 +260,12 @@ typedef NS_ENUM(NSInteger , ImagesType) {
 #pragma mark - <************************** 其他方法 **************************>
 // !!!: 按钮操作
 -(void)btnAction:(UIButton*)btn{
-    if (btn.tag==1) {   // 回退
-        [self goBackAction];
-    }else if (btn.tag==2){  // 保存图片
-        [self savBtnAction];
-    }
-}
-
--(void)goBackAction{
-    [UIView animateWithDuration:0.35 animations:^{
-        self.alpha = 0;
-    } completion:^(BOOL finished) {
-        [self removeFromSuperview];
-    }];
+    [self savBtnAction];
 }
 -(void)savBtnAction{
     [self.activityIndicator startAnimating];
     self.saveBtn.alpha = 0;
-    UIImage *currentImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.images[self.pageControl.currentPage]]]];
+    UIImage *currentImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.images[self.currentPage]]]];
     UIImageWriteToSavedPhotosAlbum(currentImage, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
 }
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo{
@@ -255,15 +284,50 @@ typedef NS_ENUM(NSInteger , ImagesType) {
                                           otherButtonTitles:nil];
     [alert show];
 }
+// !!!: 将图片移回原来位置
+- (void)goToOriginPositonIfNeeded{
+    if(self.fromFrame.size.width){
+        NSArray *cellArray =  self.collectionView.visibleCells;
+        PhotoBrowserCollectionViewCell *cell = cellArray.firstObject;
+        UIImageView *imageView = cell.imageView;
+        
+        if(cell.scrollView.zoomScale > 1)//放大问题未解决，暂时强制取消放大效果
+            [cell.scrollView setZoomScale:1];
+        
+        //由于imageview的contentModel是fit，所以不能把imageview的frame作为image的frame，需要进行转化，并将contentMode转为fill达到我们想要的效果
+        CGFloat img_width = imageView.frame.size.width;//image的宽即imageView的宽
+        CGFloat img_height = img_width * imageView.image.size.height / imageView.image.size.width;//算出image按比例缩放后的高
+        CGFloat img_x = imageView.frame.origin.x;
+        CGFloat img_y = cell.scrollView.frame.size.height / 2 - img_height / 2;
+        
+        UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
+        CGRect imgFrame = [imageView.superview convertRect:CGRectMake(img_x, img_y, img_width, img_height) toView:window];
+        imageView.frame = imgFrame;
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        imageView.layer.masksToBounds = YES;
+        [window addSubview:imageView];
+        [self animateWithDuration:durationLong animations:^{
+            imageView.frame = self.fromFrame;
+        } completion:^{
+            [imageView removeFromSuperview];
+            self.fromView.hidden = NO;
+        } notification:YES];
+    }
+}
+
 // !!!: 手势处理
 - (void)handleSwipe:(UIPanGestureRecognizer *)swipe{
     NSArray *cellArray =  self.collectionView.visibleCells;
-    PhotoBrowserCollectionViewCell *cell = cellArray.firstObject;
-    if (cell.scrollView.zoomScale>1||self.collectionView.isDragging) { // 如果已经是放大操作了，或者正在拖拽，则不响应手势
+    for (PhotoBrowserCollectionViewCell *cell in cellArray) {
+        if (cell.scrollView.zoomScale>1) {
+            return;
+        }
+    }
+    if (self.collectionView.isDragging) { // 如果已经是放大操作了，或者正在拖拽，则不响应手势
         return;
     }
-
-    CGFloat hideHeight = 150.0; // 设置消失的最大滑动距离
+    
+    CGFloat hideHeight = 100.0; // 设置消失的最大滑动距离
     if (swipe.state == UIGestureRecognizerStateChanged) {
         CGPoint translation = [swipe translationInView:self.collectionView];
         CGFloat absX = fabs(translation.x);
@@ -275,7 +339,6 @@ typedef NS_ENUM(NSInteger , ImagesType) {
             // 此时需要禁掉collectionView的滚动能力
             self.collectionView.scrollEnabled = NO;
             self.bgView.alpha = (hideHeight*3 - absY)/ (hideHeight*3);
-            self.backBtn.alpha = self.bgView.alpha;
             self.saveBtn.alpha = self.bgView.alpha;
             CGRect newFrame = self.collectionView.frame;
             newFrame.origin.y = translation.y;
@@ -287,7 +350,8 @@ typedef NS_ENUM(NSInteger , ImagesType) {
         self.collectionView.scrollEnabled = YES;
         // 如果超过了最大滑动距离
         if (fabs(self.collectionView.frame.origin.y)>hideHeight) {
-            [UIView animateWithDuration:0.5 animations:^{
+            [self goToOriginPositonIfNeeded];
+            [self animateWithDuration:durationLong animations:^{
                 self.alpha = 0;
                 if (self.collectionView.frame.origin.y<0) {
                     CGRect newFrame = self.collectionView.frame;
@@ -298,33 +362,33 @@ typedef NS_ENUM(NSInteger , ImagesType) {
                     newFrame.origin.y = self.collectionView.frame.origin.y + self.frame.size.height;
                     self.collectionView.frame = newFrame;
                 }
-            } completion:^(BOOL finished) {
+            } completion:^{
                 [self removeFromSuperview];
-            }];
+            } notification:YES];
         }else{  // 重新回复到最初位置
-            [UIView animateWithDuration:0.25 animations:^{
+            [self animateWithDuration:durationLong animations:^{
                 CGRect newFrame = self.collectionView.frame;
                 newFrame.origin.y = 0;
                 self.collectionView.frame = newFrame;
                 self.bgView.alpha = 1;
-                self.backBtn.alpha = self.bgView.alpha;
                 self.saveBtn.alpha = self.bgView.alpha;
-            }];
+            } completion:nil notification:NO];
         }
     }
 }
 
 
 -(void)handleSingleTap:(UIGestureRecognizer *)tap{
-    [UIView animateWithDuration:0.5 animations:^{
+    [self goToOriginPositonIfNeeded];
+    [self animateWithDuration:durationLong animations:^{
         CGRect newFrame = self.collectionView.frame;
         newFrame.origin.y = self.collectionView.frame.origin.y + self.frame.size.height;
         self.collectionView.frame = newFrame;
         self.bgView.alpha = 0;
         self.collectionView.alpha = 0;
-    } completion:^(BOOL finished) {
+    } completion:^{
         [self removeFromSuperview];
-    }];
+    } notification:YES];
 }
 
 -(void)handleDoubleTap:(UIGestureRecognizer *)tap{
@@ -333,9 +397,29 @@ typedef NS_ENUM(NSInteger , ImagesType) {
     if (cell.scrollView.zoomScale!=1) {
         [cell.scrollView setZoomScale:1 animated:YES];
     }else{
-       [cell.scrollView setZoomScale:2 animated:YES];
+        [cell.scrollView setZoomScale:2 animated:YES];
     }
 }
+
+
+// !!!: 统一动画
+-(void)animateWithDuration:(CGFloat)duration animations:(void(^)())animations completion:(void(^)())completion notification:(BOOL)need{
+    [UIView animateWithDuration:duration animations:^{
+        if (animations) {
+            animations();
+        }
+    } completion:^(BOOL finished) {
+        if (completion) {
+            completion();
+        }
+        if (need) {
+            if (self.delegate&&[self.delegate respondsToSelector:@selector(photoBrowser:didHidden:)]) {
+                [self.delegate photoBrowser:self didHidden:self.currentPage];
+            }
+        }
+    }];
+}
+
 
 
 
@@ -395,7 +479,7 @@ typedef NS_ENUM(NSInteger , ImagesType) {
     CGFloat offsetY = (scrollView.bounds.size.height > scrollView.contentSize.height)?
     (scrollView.bounds.size.height - scrollView.contentSize.height) * 0.5 : 0.0;
     self.imageView.center = CGPointMake(scrollView.contentSize.width * 0.5 + offsetX,
-                                       scrollView.contentSize.height * 0.5 + offsetY);
+                                        scrollView.contentSize.height * 0.5 + offsetY);
 }
 
 @end
