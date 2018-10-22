@@ -28,7 +28,7 @@
     if (ops.count==0) {
         return;
     }
-    PhotoPickView* pickView = [[PhotoPickView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    PhotoPickView* pickView = [[PhotoPickView alloc] initWithFrame:baseView.bounds];
     pickView.backgroundColor = [UIColor.blackColor colorWithAlphaComponent:0.5];
     pickView.alpha = 0;
     [UIView animateWithDuration:0.25 animations:^{
