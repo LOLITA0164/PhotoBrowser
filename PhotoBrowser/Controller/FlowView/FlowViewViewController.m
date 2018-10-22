@@ -9,6 +9,7 @@
 #import "FlowViewViewController.h"
 #import "CustomCollectionViewCell.h"
 #import "PhotoBrowser.h"
+#import "PhotoPickView.h"
 #import "CutomCollectionViewLayout.h"
 #import "FlowViewManager.h"
 #import <UIImageView+WebCache.h>
@@ -77,6 +78,20 @@
         CustomCollectionViewCell *cell = (CustomCollectionViewCell*)[self.collectionView cellForItemAtIndexPath:indexPath];
         completion(cell);
     });
+}
+
+// !!!!: 长按手势
+-(void)photoBrowser:(PhotoBrowser *)photoBrowser LongPress:(UILongPressGestureRecognizer *)longPress{
+    PhotoPickItem* item1 = [PhotoPickItem itemWithTitle:@"操作1" picked:^{
+        
+    }];
+    PhotoPickItem* item2 = [PhotoPickItem itemWithTitle:@"操作2" picked:^{
+        
+    }];
+    PhotoPickItem* item3 = [PhotoPickItem itemWithTitle:@"操作3" picked:^{
+        
+    }];
+    [PhotoPickView showOnView:photoBrowser Options:@[item1,item2,item3]];
 }
 
 

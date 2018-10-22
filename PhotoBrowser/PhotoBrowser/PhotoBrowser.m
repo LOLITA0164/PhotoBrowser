@@ -17,7 +17,12 @@ typedef NS_ENUM(NSInteger , ImagesType) {
     Image_URL
 };
 
-@interface PhotoBrowser ()<UICollectionViewDelegate,UICollectionViewDataSource,UIGestureRecognizerDelegate>
+@interface PhotoBrowser ()
+<
+    UICollectionViewDelegate,
+    UICollectionViewDataSource,
+    UIGestureRecognizerDelegate
+>
 // !!!: 视图类
 @property (strong ,nonatomic) UICollectionView *collectionView;
 @property (strong ,nonatomic) UIView *bgView;   // 用来控制渐变而不改变父视图self
@@ -137,6 +142,9 @@ typedef NS_ENUM(NSInteger , ImagesType) {
         [_collectionView addGestureRecognizer:doubleTapGesture];
         //只有当doubleTapGesture识别失败的时候(即识别出这不是双击操作)，singleTapGesture才能开始识别
         [singleTapGesture requireGestureRecognizerToFail:doubleTapGesture];
+        
+        UILongPressGestureRecognizer* longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+        [_collectionView addGestureRecognizer:longPressGesture];
     }
     return _collectionView;
 }
@@ -260,12 +268,19 @@ typedef NS_ENUM(NSInteger , ImagesType) {
 #pragma mark - <************************** 其他方法 **************************>
 // !!!: 按钮操作
 -(void)btnAction:(UIButton*)btn{
-    [self savBtnAction];
+    [self saveImageFromCurrentPage];
 }
--(void)savBtnAction{
+-(void)saveImageFromCurrentPage{
     [self.activityIndicator startAnimating];
     self.saveBtn.alpha = 0;
-    UIImage *currentImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.images[self.currentPage]]]];
+    NSString* urlString = self.images[self.currentPage];
+    [self saveImageWithURLString:urlString];
+}
+-(void)saveImageWithURLString:(NSString*)urlString{
+    if (urlString.length==0) {
+        return;
+    }
+    UIImage *currentImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:urlString]]];
     UIImageWriteToSavedPhotosAlbum(currentImage, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
 }
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo{
@@ -284,6 +299,51 @@ typedef NS_ENUM(NSInteger , ImagesType) {
                                           otherButtonTitles:nil];
     [alert show];
 }
+
+
+
+
+// !!!!: 识别图中的二维码
+-(NSString*)identifyQRCodeFromCurrentPage{
+    NSString* urlString = self.images[self.currentPage];
+    return [PhotoBrowser identifyQRCodeWithURLString:urlString];
+}
++(NSString *)identifyQRCodeWithURLString:(NSString *)urlString{
+    if (urlString.length==0) {
+        return @"";
+    }
+    NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlString]];
+    CIDetector* detector = [CIDetector detectorOfType:CIDetectorTypeQRCode context:nil options:@{CIDetectorAccuracy:CIDetectorAccuracyHigh}];
+    CIImage* ciImage = [CIImage imageWithData:data];
+    NSArray* features = [detector featuresInImage:ciImage];
+    if (features.count) {
+        CIQRCodeFeature* feature = [features objectAtIndex:0];
+        NSString* scannedResult = feature.messageString;
+        return scannedResult;
+    }else{
+        return @"";
+    }
+}
+
+// !!!!: 当前图片是否存在二维码
+-(BOOL)existQRCodeFromCurrentPage{
+    NSString* urlString = self.images[self.currentPage];
+    return [PhotoBrowser existQRCodeWithUrl:urlString];
+}
+
++(BOOL)existQRCodeWithUrl:(NSString*)urlString{
+    if (urlString.length==0) {
+        return @"";
+    }
+    NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlString]];
+    CIDetector* detector = [CIDetector detectorOfType:CIDetectorTypeQRCode context:nil options:@{CIDetectorAccuracy:CIDetectorAccuracyHigh}];
+    CIImage* ciImage = [CIImage imageWithData:data];
+    NSArray* features = [detector featuresInImage:ciImage];
+    return features.count;
+}
+
+
+
 // !!!: 将图片移回原来位置
 - (void)goToOriginPositonIfNeeded{
     if(self.fromFrame.size.width){
@@ -314,6 +374,7 @@ typedef NS_ENUM(NSInteger , ImagesType) {
         } notification:YES];
     }
 }
+
 
 // !!!: 手势处理
 - (void)handleSwipe:(UIPanGestureRecognizer *)swipe{
@@ -350,21 +411,7 @@ typedef NS_ENUM(NSInteger , ImagesType) {
         self.collectionView.scrollEnabled = YES;
         // 如果超过了最大滑动距离
         if (fabs(self.collectionView.frame.origin.y)>hideHeight) {
-            [self goToOriginPositonIfNeeded];
-            [self animateWithDuration:durationLong animations:^{
-                self.alpha = 0;
-                if (self.collectionView.frame.origin.y<0) {
-                    CGRect newFrame = self.collectionView.frame;
-                    newFrame.origin.y = self.collectionView.frame.origin.y - self.frame.size.height;
-                    self.collectionView.frame = newFrame;
-                }else{
-                    CGRect newFrame = self.collectionView.frame;
-                    newFrame.origin.y = self.collectionView.frame.origin.y + self.frame.size.height;
-                    self.collectionView.frame = newFrame;
-                }
-            } completion:^{
-                [self removeFromSuperview];
-            } notification:YES];
+            [self hidden];
         }else{  // 重新回复到最初位置
             [self animateWithDuration:durationLong animations:^{
                 CGRect newFrame = self.collectionView.frame;
@@ -401,6 +448,15 @@ typedef NS_ENUM(NSInteger , ImagesType) {
     }
 }
 
+-(void)handleLongPress:(UILongPressGestureRecognizer*)longPress{
+    if (longPress.state == UIGestureRecognizerStateBegan) {
+        if (self.delegate&&[self.delegate respondsToSelector:@selector(photoBrowser:LongPress:)]) {
+            [self.delegate photoBrowser:self LongPress:longPress];
+        }
+    }
+}
+
+
 
 // !!!: 统一动画
 -(void)animateWithDuration:(CGFloat)duration animations:(void(^)())animations completion:(void(^)())completion notification:(BOOL)need{
@@ -420,8 +476,28 @@ typedef NS_ENUM(NSInteger , ImagesType) {
     }];
 }
 
+-(void)hidden{
+    [self goToOriginPositonIfNeeded];
+    [self animateWithDuration:durationLong animations:^{
+        self.alpha = 0;
+        if (self.collectionView.frame.origin.y<0) {
+            CGRect newFrame = self.collectionView.frame;
+            newFrame.origin.y = self.collectionView.frame.origin.y - self.frame.size.height;
+            self.collectionView.frame = newFrame;
+        }else{
+            CGRect newFrame = self.collectionView.frame;
+            newFrame.origin.y = self.collectionView.frame.origin.y + self.frame.size.height;
+            self.collectionView.frame = newFrame;
+        }
+    } completion:^{
+        [self removeFromSuperview];
+    } notification:YES];
+}
 
 
+//-(void)dealloc{
+//    NSLog(@"%@释放了。",self.class);
+//}
 
 @end
 

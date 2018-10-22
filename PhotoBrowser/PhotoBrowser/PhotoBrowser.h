@@ -21,9 +21,10 @@
 -(UIView *)photoBrowser:(PhotoBrowser *)photoBrowser didScrollToPage:(NSInteger)currentPage;
 // !!!: 配合视图滚动使用
 -(void)photoBrowser:(PhotoBrowser *)photoBrowser didScrollToPage:(NSInteger)currentPage completion:(void(^)(UIView *))completion;
-
 // !!!: 结束显示
 -(void)photoBrowser:(PhotoBrowser *)photoBrowser didHidden:(NSInteger)currentPage;
+// !!!!: 长按事件
+-(void)photoBrowser:(PhotoBrowser *)photoBrowser LongPress:(UILongPressGestureRecognizer*)longPress;
 
 @end
 
@@ -31,22 +32,61 @@
 
 
 @interface PhotoBrowser : UIView
-
 @property (weak, nonatomic) id <PhotoBrowserDelegate> delegate;
+@property (assign ,nonatomic, readonly) NSInteger currentPage;      // 当前页
 
 /**
  加载本地图片
- 
  @note selectedView 可选参数：一般来说是一个imageView，关闭浏览器时会将这个视图移回原来的位置
  */
 +(instancetype)showLocalImages:(NSArray*)images selectedIndex:(NSInteger)index selectedView:(UIView *)selectedView;;
 
 /**
  加载网络图片
- 
  @note selectedView 可选参数：一般来说是一个imageView，关闭浏览器时会将这个视图移回原来的位置
  */
 +(instancetype)showURLImages:(NSArray*)images placeholderImage:(UIImage *)image selectedIndex:(NSInteger)index  selectedView:(UIView *)selectedView;
+
+
+/**
+ 主动隐藏
+ */
+-(void)hidden;
+
+/**
+ 保存当前页面的图片
+ */
+-(void)saveImageFromCurrentPage;
+/**
+ 识别当前图片中的二维码信息
+ @return 识别结果
+ */
+-(NSString*)identifyQRCodeFromCurrentPage;
+/**
+ 当前图片是否存在二维码
+ */
+-(BOOL)existQRCodeFromCurrentPage;
+
+
+
+
+
+/**
+ 保存网络图片
+ @param urlString 网络图片地址
+ */
+-(void)saveImageWithURLString:(NSString*)urlString;
+/**
+ 识别网络图片中的二维码信息
+ @param urlString 网络图片地址
+ @return 识别结果
+ */
++(NSString*)identifyQRCodeWithURLString:(NSString*)urlString;
+/**
+ 是否存在二维码
+ */
++(BOOL)existQRCodeWithUrl:(NSString*)url;
+
 
 @end
 

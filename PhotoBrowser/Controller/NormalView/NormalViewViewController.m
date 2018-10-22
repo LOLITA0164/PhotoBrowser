@@ -11,6 +11,7 @@
 #import "TESTDATA.h"
 #import <UIButton+WebCache.h>
 #import "PhotoBrowser.h"
+#import "PhotoPickView.h"
 
 @interface NormalViewViewController ()<PhotoBrowserDelegate>
 @property (strong ,nonatomic) NSMutableArray *btns;
@@ -57,6 +58,32 @@
 // !!!: 浏览器代理
 - (UIView *)photoBrowser:(PhotoBrowser *)photoBrowser didScrollToPage:(NSInteger)currentPage{
     return self.btns[currentPage];
+}
+
+// !!!!: 长按手势
+-(void)photoBrowser:(PhotoBrowser *)photoBrowser LongPress:(UILongPressGestureRecognizer *)longPress{
+    NSMutableArray* items = [NSMutableArray array];
+    PhotoPickItem* item1 = [PhotoPickItem itemWithTitle:@"保存图片" picked:^{
+        [photoBrowser saveImageFromCurrentPage];
+    }];
+    [items addObject:item1];
+    if ([photoBrowser existQRCodeFromCurrentPage]) {
+        PhotoPickItem* item2 = [PhotoPickItem itemWithTitle:@"识别二维码" picked:^{
+            NSString* urlString = [photoBrowser identifyQRCodeFromCurrentPage];
+            [[[UIAlertView alloc] initWithTitle:@"二维码"
+                                        message:urlString
+                                       delegate:self
+                              cancelButtonTitle:@"确定"
+                              otherButtonTitles:nil] show];
+            [photoBrowser hidden];
+            NSURL* url = [NSURL URLWithString:urlString];
+            if ([[UIApplication sharedApplication] canOpenURL:url]) {
+                [[UIApplication sharedApplication] openURL:url];
+            }
+        }];
+        [items addObject:item2];
+    }
+    [PhotoPickView showOnView:photoBrowser Options:items];
 }
 
 

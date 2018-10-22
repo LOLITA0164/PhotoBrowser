@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C7988AE0217D9556003378B4 /* PhotoPickView.m in Sources */ = {isa = PBXBuildFile; fileRef = C7988ADF217D9556003378B4 /* PhotoPickView.m */; };
 		C7E84B73206A2F55001E73F0 /* PhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = C7E84B6A206A2F55001E73F0 /* PhotoBrowser.m */; };
 		C7E84B74206A2F55001E73F0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7E84B6D206A2F55001E73F0 /* ViewController.m */; };
 		C7E84B75206A2F55001E73F0 /* TESTDATA.m in Sources */ = {isa = PBXBuildFile; fileRef = C7E84B71206A2F55001E73F0 /* TESTDATA.m */; };
@@ -33,6 +34,8 @@
 /* Begin PBXFileReference section */
 		00D3F6D83E175E94F868CD58 /* libPods-PhotoBrowser.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PhotoBrowser.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A073C1EAB9A969640D32EB06 /* Pods-PhotoBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoBrowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-PhotoBrowser/Pods-PhotoBrowser.release.xcconfig"; sourceTree = "<group>"; };
+		C7988ADE217D9556003378B4 /* PhotoPickView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoPickView.h; sourceTree = "<group>"; };
+		C7988ADF217D9556003378B4 /* PhotoPickView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoPickView.m; sourceTree = "<group>"; };
 		C7E84B6A206A2F55001E73F0 /* PhotoBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoBrowser.m; sourceTree = "<group>"; };
 		C7E84B6B206A2F55001E73F0 /* PhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoBrowser.h; sourceTree = "<group>"; };
 		C7E84B6D206A2F55001E73F0 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
@@ -96,6 +99,8 @@
 			children = (
 				C7E84B6B206A2F55001E73F0 /* PhotoBrowser.h */,
 				C7E84B6A206A2F55001E73F0 /* PhotoBrowser.m */,
+				C7988ADE217D9556003378B4 /* PhotoPickView.h */,
+				C7988ADF217D9556003378B4 /* PhotoPickView.m */,
 			);
 			path = PhotoBrowser;
 			sourceTree = "<group>";
@@ -352,6 +357,7 @@
 				C7E84B7D206A31AB001E73F0 /* ListViewController.m in Sources */,
 				C7E84B84206A4ACF001E73F0 /* ListViewTableViewCell.m in Sources */,
 				C7E84B75206A2F55001E73F0 /* TESTDATA.m in Sources */,
+				C7988AE0217D9556003378B4 /* PhotoPickView.m in Sources */,
 				C7E84B74206A2F55001E73F0 /* ViewController.m in Sources */,
 				D3D47A2F1F5E64E4005EC63C /* main.m in Sources */,
 				C7E84B8C206A59DB001E73F0 /* CutomCollectionViewLayout.m in Sources */,
