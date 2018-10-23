@@ -149,9 +149,10 @@
         } completion:^(BOOL finished) {
             [UIView animateWithDuration:0.15 animations:^{
                 self.alpha = 0;
+            } completion:^(BOOL finished) {
+                // 从父视图上移除，以主动断开强引用。
+                [self removeFromSuperview];
             }];
-            // 从父视图上移除，以主动断开强引用。
-            [self removeFromSuperview];
         }];
     }
 }

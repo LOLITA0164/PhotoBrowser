@@ -58,10 +58,12 @@
  */
 -(void)saveImageFromCurrentPage;
 /**
- 识别当前图片中的二维码信息
+ 识别当前图片中的二维码信息，主线程中，可能导致线程阻塞
  @return 识别结果
  */
 -(NSString*)identifyQRCodeFromCurrentPage;
+// 异步处理二维码，回调识别结果
+-(void)identifyQRCodeFromCurrentPage:(void(^)(NSString*result))completion;
 /**
  当前图片是否存在二维码
  */
@@ -70,6 +72,8 @@
 
 
 
+
+/******************** 一些额外功能 ********************/
 
 /**
  保存网络图片
@@ -82,6 +86,8 @@
  @return 识别结果
  */
 +(NSString*)identifyQRCodeWithURLString:(NSString*)urlString;
+// 异步处理二维码，回调识别结果
++(void)identifyQRCodeWithURLString:(NSString*)urlString completion:(void(^)(NSString*result))completion;
 /**
  是否存在二维码
  */

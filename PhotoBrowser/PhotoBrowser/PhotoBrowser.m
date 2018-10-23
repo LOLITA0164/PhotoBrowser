@@ -274,7 +274,9 @@ typedef NS_ENUM(NSInteger , ImagesType) {
     [self.activityIndicator startAnimating];
     self.saveBtn.alpha = 0;
     NSString* urlString = self.images[self.currentPage];
-    [self saveImageWithURLString:urlString];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self saveImageWithURLString:urlString];
+    });
 }
 -(void)saveImageWithURLString:(NSString*)urlString{
     if (urlString.length==0) {
@@ -290,14 +292,16 @@ typedef NS_ENUM(NSInteger , ImagesType) {
     }else{
         msg = @"保存图片成功";
     }
-    [self.activityIndicator stopAnimating];
-    self.saveBtn.alpha = 1;
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                    message:msg
-                                                   delegate:self
-                                          cancelButtonTitle:@"确定"
-                                          otherButtonTitles:nil];
-    [alert show];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.activityIndicator stopAnimating];
+        self.saveBtn.alpha = 1;
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                        message:msg
+                                                       delegate:self
+                                              cancelButtonTitle:@"确定"
+                                              otherButtonTitles:nil];
+        [alert show];
+    });
 }
 
 
@@ -308,6 +312,15 @@ typedef NS_ENUM(NSInteger , ImagesType) {
     NSString* urlString = self.images[self.currentPage];
     return [PhotoBrowser identifyQRCodeWithURLString:urlString];
 }
+-(void)identifyQRCodeFromCurrentPage:(void(^)(NSString*result))completion{
+    if (completion) {
+        NSString* urlString = self.images[self.currentPage];
+        [PhotoBrowser identifyQRCodeWithURLString:urlString completion:^(NSString *result) {
+            completion(result);
+        }];
+    }
+}
+
 +(NSString *)identifyQRCodeWithURLString:(NSString *)urlString{
     if (urlString.length==0) {
         return @"";
@@ -323,6 +336,16 @@ typedef NS_ENUM(NSInteger , ImagesType) {
     }else{
         return @"";
     }
+}
++(void)identifyQRCodeWithURLString:(NSString*)urlString completion:(void(^)(NSString*result))completion{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString* result = [self identifyQRCodeWithURLString:urlString];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (completion) {
+                completion(result);
+            }
+        });
+    });
 }
 
 // !!!!: 当前图片是否存在二维码
