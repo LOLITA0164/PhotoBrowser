@@ -80,6 +80,7 @@
  @param urlString 网络图片地址
  */
 -(void)saveImageWithURLString:(NSString*)urlString;
++(void)saveImageWithURLString:(NSString*)urlString;
 /**
  识别网络图片中的二维码信息
  @param urlString 网络图片地址

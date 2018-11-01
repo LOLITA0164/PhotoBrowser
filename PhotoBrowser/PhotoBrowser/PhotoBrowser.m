@@ -285,6 +285,13 @@ typedef NS_ENUM(NSInteger , ImagesType) {
     UIImage *currentImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:urlString]]];
     UIImageWriteToSavedPhotosAlbum(currentImage, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
 }
++(void)saveImageWithURLString:(NSString*)urlString{
+    if (urlString.length==0) {
+        return;
+    }
+    UIImage *currentImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:urlString]]];
+    UIImageWriteToSavedPhotosAlbum(currentImage, [self new], @selector(image:didFinishSavingWithError:contextInfo:), nil);
+}
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo{
     NSString *msg = nil ;
     if(error != NULL){
