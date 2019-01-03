@@ -36,16 +36,16 @@
 @property (assign ,nonatomic, readonly) NSInteger currentPage;      // 当前页
 
 /**
- 加载本地图片
+ 加载本地图片，可以是 NSString/UIImage
  @note selectedView 可选参数：一般来说是一个imageView，关闭浏览器时会将这个视图移回原来的位置
  */
-+(instancetype)showLocalImages:(NSArray*)images selectedIndex:(NSInteger)index selectedView:(UIView *)selectedView;;
++(instancetype)showLocalImages:(NSArray<id>*)images selectedIndex:(NSInteger)index selectedView:(UIView *)selectedView;;
 
 /**
  加载网络图片
  @note selectedView 可选参数：一般来说是一个imageView，关闭浏览器时会将这个视图移回原来的位置
  */
-+(instancetype)showURLImages:(NSArray*)images placeholderImage:(UIImage *)image selectedIndex:(NSInteger)index  selectedView:(UIView *)selectedView;
++(instancetype)showURLImages:(NSArray<NSString*>*)images placeholderImage:(UIImage *)image selectedIndex:(NSInteger)index  selectedView:(UIView *)selectedView;
 
 
 /**

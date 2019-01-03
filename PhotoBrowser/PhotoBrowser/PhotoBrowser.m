@@ -107,11 +107,11 @@ typedef NS_ENUM(NSInteger , ImagesType) {
 }
 
 
-+ (instancetype)showLocalImages:(NSArray *)images selectedIndex:(NSInteger)index selectedView:(UIView *)selectedView{
++ (instancetype)showLocalImages:(NSArray <id>*)images selectedIndex:(NSInteger)index selectedView:(UIView *)selectedView{
     return [self showImages:images imageTyep:Image_Local placeholderImage:nil selectedIndex:index fromView:selectedView];
 }
 
-+(instancetype)showURLImages:(NSArray *)images placeholderImage:(UIImage *)image selectedIndex:(NSInteger)index selectedView:(UIView *)selectedView{
++(instancetype)showURLImages:(NSArray <NSString*>*)images placeholderImage:(UIImage *)image selectedIndex:(NSInteger)index selectedView:(UIView *)selectedView{
     return [self showImages:images imageTyep:Image_URL placeholderImage:image selectedIndex:index fromView:selectedView];
 }
 
@@ -213,7 +213,12 @@ typedef NS_ENUM(NSInteger , ImagesType) {
     switch (self.type) {
         case Image_Local:
         {
-            cell.imageView.image = [UIImage imageNamed:self.images[indexPath.row]];
+            id image = self.images[indexPath.row];
+            if ([image isKindOfClass:NSString.class]) {
+                cell.imageView.image = [UIImage imageNamed:image];
+            }else if ([image isKindOfClass:UIImage.class]){
+                cell.imageView.image = image;
+            }
         }
             break;
         case Image_URL:
